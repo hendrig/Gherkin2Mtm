@@ -239,6 +239,7 @@ namespace Gherkin2MtmApi.Helpers
                     scenarioTag => scenarioTag.Name.Trim().ToUpperInvariant().StartsWith(
                         SyncUtil.MtmTcLink, StringComparison.InvariantCulture));
                 Logger.Info(ResourceStrings.DECORATION, $"Syncing scenario, {scenarioDefinition.Name}");
+                Console.WriteLine($"Syncing scenario, {scenarioDefinition.Name}");
                 if (mtmIdTag == null)
                 {
                     SaveChanges(teamProject, background, null, scenarioDefinition, hash, area, tags, fieldsCollection);
@@ -264,6 +265,7 @@ namespace Gherkin2MtmApi.Helpers
                 {
                     // This could happen when a test case is deleted from the MTM but exists in the corresponding feature file
                     Logger.Info(ResourceStrings.DECORATION, $"Linked test case, {mtmIdTag.Name}, is not found");
+                    Console.WriteLine($"Linked test case, {mtmIdTag.Name}, is not found");
                 }
                 // Need to create a test case when the link is failed
                 SaveChanges(teamProject, background, null, scenarioDefinition, hash, area, tags, fieldsCollection);
@@ -390,6 +392,7 @@ namespace Gherkin2MtmApi.Helpers
             }
 
             Logger.Info(ResourceStrings.DECORATION, $"{scenarioDefinition.Name}<{testCase.Id}> is uptodate");
+            Console.WriteLine($"{scenarioDefinition.Name}<{testCase.Id}> is uptodate");
             return false;
         }
 
@@ -399,6 +402,7 @@ namespace Gherkin2MtmApi.Helpers
             if (!IsManualScenario(scenarioTags))
             {
                 Logger.Info(ResourceStrings.DECORATION, $"{scenarioDefinition.Name} ignored: not a manual scenario");
+                Console.WriteLine($"{scenarioDefinition.Name} ignored: not a manual scenario");
                 return false;
             }
 
@@ -408,6 +412,7 @@ namespace Gherkin2MtmApi.Helpers
             }
 
             Logger.Error(ResourceStrings.DECORATION, $"{scenarioDefinition.Name} aborted: Required tags are missing");
+            Console.WriteLine($"{scenarioDefinition.Name} aborted: Required tags are missing");
             return false;
         }
 
@@ -421,6 +426,7 @@ namespace Gherkin2MtmApi.Helpers
             }
 
             Logger.Error(ResourceStrings.DECORATION, "Invalid fields");
+            Console.WriteLine("Invalid fields");
             foreach (var validation in validationList)
             {
                 var field = (Field)validation;
@@ -474,10 +480,12 @@ namespace Gherkin2MtmApi.Helpers
                         new Location(mtmIdTag.Location.Line, mtmIdTag.Location.Column + 1),
                         $"{SyncUtil.MtmTcLink}{testCase.Id}"));
                 Logger.Info(ResourceStrings.DECORATION, $"{testCase.Id} is created");
+                Console.WriteLine($"{testCase.Id} is created");
                 return;
             }
 
             Logger.Info(ResourceStrings.DECORATION, $"{testCase.Id} is updated");
+            Console.WriteLine($"{testCase.Id} is updated");
         }
 
         private static void SaveTestCase(ITestBase testCase)
