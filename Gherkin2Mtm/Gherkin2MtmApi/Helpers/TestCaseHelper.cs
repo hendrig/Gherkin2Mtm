@@ -86,11 +86,15 @@ namespace Gherkin2MtmApi.Helpers
 
         private static bool LinkAlreadyExists(int workItemId, LinkCollection links)
         {
-            foreach (RelatedLink link in links)
+            foreach (Link link in links)
             {
-                if (workItemId == link.RelatedWorkItemId)
+                if (link.BaseType == BaseLinkType.RelatedLink)
                 {
-                    return true;
+                    var l = link as RelatedLink;
+                    if (workItemId == l.RelatedWorkItemId)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
